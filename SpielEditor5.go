@@ -10,7 +10,7 @@ func maussteuerung (s spielfeld.Spielfeld, a []gelaende.Gelände, b []einheiten.
 	var agewaehlt string
 	var bgewaehlt string
 	var spieler uint8
-	var element uint8 // bei 0 soll ein Gelände eingefügt werden, bei 1 soll eine Einheit eingefügt werden
+	var element uint8 // bei 0 soll ein Gelände eingefügt werden, bei 1 soll eine Einheit eingefügt werden, bei 2 soll eine Einheit gelöscht werden
 	a[0].SetzeGewaehlt(true)
 	agewaehlt=a[0].GibTyp()
 	for { 
@@ -32,7 +32,9 @@ func maussteuerung (s spielfeld.Spielfeld, a []gelaende.Gelände, b []einheiten.
 						s.EntferneEinheit(x,y)
 					}
 					s.SetzeEinheit (x,y,einzufein)	
-				}		
+				} else if element == 2 {
+          s.EntferneEinheit (x,y)
+        }		
 			}
 	// Oder ein neuer Geländetyp gewählt, welcher gesetzt werden soll			
 			if mausX>1050 && mausX<1150 && mausY<100 {
@@ -71,13 +73,17 @@ func maussteuerung (s spielfeld.Spielfeld, a []gelaende.Gelände, b []einheiten.
 						w.SetzeGewaehlt(false)
 				}	
 			}
+  // Oder es wird Löschen ausgewählt
+      if mausX>1000 && mausX<1200 && mausY>300 && mausY<350 {
+        element=2
+      }
 	// Oder es wird Speichern ausgewählt
-			if mausX>1050 && mausX<1150 && mausY>600 && mausY<650{
+			if mausX>1050 && mausX<1150 && mausY>600 && mausY<650 {
 				speichern=true
 				ok=true
 			}
 	// Oder es wird Laden ausgewählt
-			if mausX>1050 && mausX<1150 && mausY>400 && mausY<450{
+			if mausX>1050 && mausX<1150 && mausY>400 && mausY<450 {
 				ok=true
 				laden=true
 			}						
@@ -111,7 +117,7 @@ func ladefunc(dummyspielfeld spielfeld.Spielfeld ){
 				ok=false
 			}else if taste == 27{
 				ok=false
-				speichern=false	
+				laden=false	
 			}else{		
 				erg=erg+string(rune((int(taste))))		
 				fmt.Println(erg)
@@ -127,14 +133,16 @@ func ladefunc(dummyspielfeld spielfeld.Spielfeld ){
 		}		
 	}
 // Datei laden
-	level = dateien.Oeffnen ("./Level/level_"+erg , 'l' )
-	var bs []byte = make([]byte,0)
-	for !level.Ende() {
-		bs=append(bs,level.Lesen())
-	}
+  if laden {
+	  level = dateien.Oeffnen ("./Level/level_"+erg , 'l' )
+	  var bs []byte = make([]byte,0)
+	  for !level.Ende() {
+	 	bs=append(bs,level.Lesen())
+	  }
 	dummyspielfeld.Dekodieren (bs)			
 	level.Ende()
 	laden=false
+  }
 }
 
 /*
@@ -176,7 +184,7 @@ func speichernfunc(dummyspielfeld spielfeld.Spielfeld){
 		}		
 	}
 //Datei speichern
-	if len(erg)>0{
+	if len(erg)>0&&speichern {
 		var level dateien.Datei
 		level = dateien.Oeffnen ("./Level/level_"+erg , 's' )
 		var bs []byte = make([]byte,0)
@@ -231,7 +239,13 @@ func spielfeldaufbau() (dummyspielfeld spielfeld.Spielfeld, auswahlgelaende []ge
 
 	
 	
-
+//Tasks:
+// Design kann noch angepasst werden
+// ggF. Buttons als Liste zur Maussteuerung 
+// mehr Kommentare einfügen
+// In Spezifikation:
+// gleicher Name führt zu Überscheiben der alten Datei
+// Geladen können nur Dateien, welche existieren
 
 func main () {
 // Aufbau des Fensters:	
@@ -240,6 +254,8 @@ func main () {
 	save:=button.New(1050,600,100,50,0,0,0,255,255,255,0,0,0,"save",'m','m')
 // Button zum Laden wird erzeugt
 	load:=button.New(1050,400,100,50,0,0,0,255,255,255,0,0,0,"load",'m','m')	
+
+  loeschen:=button.New(1000,300,200,50,0,0,0,255,255,255,0,0,0,"Einheit löschen",'m','m')
 
 	var auswahlgelaende []gelaende.Gelände 
 	var auswahleinheit []einheiten.Einheit
@@ -266,16 +282,13 @@ func main () {
 		}
 		load.Zeichnen()						//Buttons werden gezeichnet
 		save.Zeichnen()
+    loeschen.Zeichnen()
 		gfx.UpdateAn()
 //Laden und Speichern wird organisiert
 //zuerst Laden
 		if laden{
 			ladefunc(dummyspielfeld)
 		}		
-
-//Achtung es gibt noch Programmabbrüche beim Laden von falschen Dateinnamen
-// Was passiert bei doppeldem namen beim speichern
-// Es gab auch ein Prblem mit esc beim landen
 
 //dann speichern
 		if speichern{
