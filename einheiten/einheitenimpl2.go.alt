@@ -1,0 +1,181 @@
+package einheiten
+
+import ("gfx";"../objekte")
+
+type objekt objekte.Objekt
+
+
+// XXX es müssten noch Boni gegen verschiedene Typen 
+type data struct {
+	objekt
+	angriff,verteidigung uint16
+	angriffreichweite uint16
+	bewegungsreichweite uint16
+	//radius uint16    --> Version Bild
+	bild string
+	typ string
+	energie uint16
+	spieler player
+}
+
+type player byte
+const (
+	A  player = iota
+	B 
+)
+
+type einheit struct{
+	r,g,b uint8      //--> entfällt eventuell für Version Bild
+	a,v,reia,reib uint16
+	bildspieler1,bildspieler2 string
+	energie uint16
+}
+
+
+var einheitentab = map[string]einheit{
+	"Artillerie": einheit{
+		0,0,255,
+		5,1,4,2,
+		"./Bilder/ArtillerieA.bmp","./Bilder/ArtillerieB.bmp", //---->Dateiname einfügen
+		10,
+	},
+	"Infanterie": einheit{
+		255,0,0,
+		1,1,3,1,
+		"./Bilder/InfanterieA.bmp","./Bilder/InfanterieB.bmp", //---->Dateiname einfügen
+		10,
+	},
+}
+ 
+func New (x,y uint16, t string, p byte) *data {
+	var neu *data = new(data)
+	(*neu).objekt = objekte.New (x,y,einheitentab[t].r,einheitentab[t].g,einheitentab[t].b)
+	(*neu).angriff = einheitentab[t].a
+	(*neu).verteidigung = einheitentab[t].v
+	(*neu).angriffreichweite = einheitentab[t].reia
+	(*neu).bewegungsreichweite = einheitentab[t].reib
+	if p=='A' {
+		(*neu).bild = einheitentab[t].bildspieler1
+		(*neu).spieler = A
+	} else if p=='B' {
+		(*neu).bild = einheitentab[t].bildspieler2
+		(*neu).spieler = B
+	} else {
+		panic ("Falscher Spielername")
+	}
+	(*neu).typ=t
+	(*neu).energie=einheitentab[t].energie
+	return neu
+}
+
+
+
+	// Erg.: Der Angriffswert der Einheit ist geliefert.
+func (e *data) GibAngriffswert () uint16 {
+	return (*e).angriff
+}
+	
+	// Eff.: Der Angriffswert der Einheit beträgt nun a. 
+func (e *data) SetzeAngriffswert (a uint16) {
+	(*e).angriff=a
+}
+
+	// Erg.: Der Verteidigungswert der Einheit ist geliefert.
+func (e *data) GibVerteidigungswert () uint16 {
+	return (*e).verteidigung
+}
+	
+	// Eff.: Der Verteidigungswert der Einheit beträgt nun v. 
+func (e *data) SetzeVerteidigungswert (v uint16) {
+	(*e).verteidigung=v
+}
+	
+	// Erg.: Die Angriffsreichweite (Anzahl der Felder) der Einheit ist geliefert.
+func (e *data) GibAngriffsReichweite () uint16 {
+	return (*e).angriffreichweite
+}
+	
+	// Eff.: Die Angriffsreichweite (Anzahl der Felder) der Einheit ist auf rei gesetzt.
+func (e *data) SetzeAngriffsReichweite (reia uint16) {
+	(*e).angriffreichweite=reia
+}
+	
+	// Erg.: Die Bewegungsreichweite (Anzahl der Felder) der Einheit ist geliefert.
+func (e *data) GibBewegungsReichweite () uint16 {
+	return (*e).bewegungsreichweite
+}
+	
+	// Eff.: Die Bewegungsreichweite (Anzahl der Felder) der Einheit ist auf rei gesetzt.
+func (e *data) SetzeBewegungsReichweite (reib uint16) {
+	(*e).bewegungsreichweite=reib
+}
+
+	// Vor.: ---
+	// Eff.: Die verbleibende Lebensenergie der Einheit ist geliefert.
+func (e *data) GibEnergie () (en uint16){
+	return (*e).energie		
+		
+}
+
+/*	
+		// Vor.: ---
+	// Erg.:  XXX-------------------------------------------------------------------------------------------------
+func (e *data)	GibSpieler () (p byte){
+	return (*e).spieler
+	}
+	
+		// Vor.: ---
+	// Erg.:  XXX-------------------------------------------------------------------------------------------------
+func (e *data)	SetzeSpieler (p byte){
+	(*e).spieler=player.p
+	if (*e).spieler==A{
+		(*e).bild = einheitentab[t].bildspieler1
+	}else{
+		(*e).bild = einheitentab[t].bildspieler2
+	}
+} 
+	
+	
+	// Vor.: 
+	// Eff.: Die Lebensernergie der Einheit ist auf e gesetzt.
+func (e *data) SetzeEnergie (en uint16){
+	(*e).energie=en
+}
+*/
+	// Erg.: 
+func (e *data) GibTyp () string {
+return (*e).typ
+}
+
+func (e *data) SetzeTyp (t string) {
+	e.SetzeFarbe(einheitentab[t].r,einheitentab[t].g,einheitentab[t].b)
+	(*e).angriff = einheitentab[t].a
+	(*e).verteidigung = einheitentab[t].v
+	(*e).angriffreichweite = einheitentab[t].reia
+	(*e).bewegungsreichweite = einheitentab[t].reib	
+	(*e).energie=einheitentab[t].energie
+	if (*e).spieler==A{
+		(*e).bild = einheitentab[t].bildspieler1
+		}else{
+			(*e).bild = einheitentab[t].bildspieler2
+			}
+	(*e).typ=t
+}
+	
+func (e *data) Zeichnen () {
+	if !gfx.FensterOffen() {
+		gfx.Fenster(1000,600)
+	}
+	//var r,gr,b uint8							// Variablen für Farbwerte
+	var x,y uint16								// Variablen für Koordinaten
+	//r,gr,b = (e).GibFarbe()						// Abfragen der r,g,b Werte des Geländes
+	x,y = (e).GibKoordinaten()  				// Abfragen der x,y-Koordinaten des Geländes
+	//gfx.Stiftfarbe (r,gr,b)						// Festlegen der Geländefarbe
+	//gfx.Vollkreis (x*50+25,y*50+25,(*e).radius)	// Zeichnen des Geländes
+	gfx.LadeBild(x*50+10,y*50+10,(*e).bild)
+}
+
+func (e *data) SetzeEnergie (en uint16) {
+	(*e).energie = en
+}
+
