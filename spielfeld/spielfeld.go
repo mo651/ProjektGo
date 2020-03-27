@@ -47,11 +47,11 @@ type Spielfeld interface {
 		
 	EntferneItem (x,y uint16) */
 	
+	//Reichweite in zu erreichenden Feldern
+	GibReichweite(einheit einheiten.Einheit)[][]bool
+	
 	Zeichnen ()
 	
-	// XXXXXXXXXXXXXXXXXXXX
-	// XXXXXXXXXXXXXXXXXXXXXx
-	FeldBesetzt (x,y uint16) bool
 	// Vor.: ---
 	// Erg.: Eine Folge von Bytes ist geliefert, die die aufrufende Instanz serialisiert darstellt.
 	Kodieren () (b []byte)
