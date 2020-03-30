@@ -6,18 +6,20 @@ package spielfeld
 
 import ("../gelaende";"../einheiten";"gfx" /*; "../items"*/)
 
+
+
 type data struct {
-	x,y uint16						// Anzahl x- & y-Kästchen --> perspektivisch soll es variabel sein
+  x,y uint16						// Anzahl x- & y-Kästchen --> perspektivisch soll es variabel sein
 	groesse uint16					// Pixelzahl Feldgröße --> perspektivisch soll es variabel sein
 	dateiname string
 	gelaendematrix [][]gelaende.Gelände	// 
 	einheitenmatrix [][]einheiten.Einheit	
-	//itemmatrix [][]items.Item		// --> später einzufügen....Optional je nach Spielentwicklung
+  //itemmatrix [][]items.Item		// --> später einzufügen....Optional je nach Spielentwicklung
 }
 
 func New (x,y,groesse uint16, dateiname string) *data {
 	var neu *data = new(data)
-	(*neu).gelaendematrix= make ([][]gelaende.Gelände,y)
+  (*neu).gelaendematrix= make ([][]gelaende.Gelände,y)
 	(*neu).einheitenmatrix=make ([][]einheiten.Einheit,y)
 	(*neu).x= 20 // x --> später wenn variabel;
 	(*neu).y= 12 // y --> später wenn variabel
@@ -31,6 +33,7 @@ func New (x,y,groesse uint16, dateiname string) *data {
 		var neueeinheitenzeile []einheiten.Einheit = make([]einheiten.Einheit,(*neu).x)
 		(*neu).einheitenmatrix[i]=neueeinheitenzeile
 	}
+  
 	//(*neu).itemmatrix=make ([][]items.Item,y)	
 	//for i:=0;i<y;i++ {
 	//	var neueitemzeile []items.Item = make([]items.Item,x)
@@ -108,7 +111,7 @@ func (s *data) Zeichnen () {
 			if einh != nil {
 				einh.Zeichnen ()
 			}
-		}
+    }
 	}
 	/* Einzeichnen der Items
 	 * for _,itmreihe := range itemmatrix {
@@ -118,7 +121,6 @@ func (s *data) Zeichnen () {
 			}
 		}
 	} *///--> sofern Items hinzugefügt werden sollen 
-	
 	// Das Gitterraster wird darüber gezeichnet
 	gfx.Stiftfarbe(0,0,0)
 	// Vertikale Linien werden gezeichnet

@@ -26,6 +26,7 @@ func main () {
 	var neueeinheit einheiten.Einheit
 	neueeinheit = einheiten.New(2,2,"Tank",1)
 	dummyspielfeld.SetzeEinheit (neueeinheit)
+  neueeinheit.SetzeGewaehlt(true)
   fmt.Println(dummyspielfeld.GibReichweite(neueeinheit)) 
 	
 	
@@ -90,6 +91,7 @@ func main () {
 	fmt.Println ("Das Spielfeld wird dekodiert")
 	spielfeldkopie.Dekodieren(bytespielfeld)
 	fmt.Println ("Das Spielfeld wird gezeichnet")
+  spielfeldkopie.GibGelände(4,4).SetzeGewaehlt(true)
 	spielfeldkopie.Zeichnen()						
 	gfx.TastaturLesen1()
 }
