@@ -33,11 +33,11 @@ type Gelände interface {
 	
 	// Vor.: --
 	// Erg.: Der Bonus zum Bewegungswert des Geländes ist geliefert.
-	GibBonusBewegung () int16
+	GibMalusBewegung () int16
 	
 	// Vor.: --
 	// Eff.: Der Bonus zum Bewegungswert des Geländes beträgt nun n. 
-	SetzeBonusBewegung (n int16)
+	SetzeMalusBewegung (n int16)
 	
 	// Vor.: --
 	// Erg.: Es ist true geliefert, gdw. das Geländefeld belegt ist, andernfalls ist false geliefert.

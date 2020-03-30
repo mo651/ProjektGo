@@ -324,23 +324,27 @@ func (s *data) GibReichweite(einheit einheiten.Einheit)(erg[][]bool) {
 	//bonusBewegung:=gelände.GibBonusBewegung()
 	var reichweite func(x,y,schritte uint16)
 	reichweite = func (x,y,schritte uint16){
-		if x<0||y<0&&schritte<0{
-			//break
-		} else{
-			gelände:=(*s).gelaendematrix[y][x]
-			malusBewegung:=gelände.GibBonusBewegung()
-			if (int16(schritte)-malusBewegung)<0{ //Bonus Bewegung sollte nur ein malus sein, alsu die Bewegun neg beeinflussen
-				//break
-			} else{
-				if erg[y][x] == false{
-					erg[y][x]=true
-					reichweite(x+1,y,schritte-1)
-					reichweite(x-1,y,schritte-1)
-					reichweite(x,y+1,schritte-1)
-					reichweite(x,y-1,schritte-1)
-				}
+		if x>(*s).x||y>(*s).y&&schritte<0 {return}		//Abbruch, da am Rand, bzw. keine Schritte mehr übrig
+		gelände:=(*s).gelaendematrix[y][x]
+		malusBewegung:=gelände.GibMalusBewegung() 			
+		if erg[y][x] == false{
+			erg[y][x]=true
+			if (int16(schritte)-malusBewegung)<0{return}	//Abbruch, da Abzug zu groß...
+			// Für jeden weiteren Aufruf muss überprüft werden, ob sich auf diesem Feld eine
+			// Einheit befindet
+			if (*s).einheitenmatrix[y][x+1] !=nil {
+				reichweite(x+1,y,schritte-uint16(malusBewegung))	// Darf ja jetzt nicht nur einen Schritt weniger weit gehen...
 			}
-		}	
+			if (*s).einheitenmatrix[y][x-1] !=nil {
+				reichweite(x-1,y,schritte-uint16(malusBewegung))	// ...sondern so viele Schritte weniger, wie ihm durch den Malus 
+			}
+			if (*s).einheitenmatrix[y+1][x] !=nil {
+				reichweite(x,y+1,schritte-uint16(malusBewegung))	// ...abgezogen werden
+			}
+			if (*s).einheitenmatrix[y-1][x] !=nil {
+				reichweite(x,y-1,schritte-uint16(malusBewegung))
+			}
+		}
 	} 
 	reichweite(x,y,moeglicheschritte)
 	return 
