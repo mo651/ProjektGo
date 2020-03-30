@@ -18,14 +18,14 @@ func main () {
 			fmt.Println ("Ein Geländefeld wurde deklariert")
 			neuesgelände = gelaende.New (x,y,"Wasser") //XXXX man beachte, dass Wasser ist "animiert", ob das im fertigen Spiel auch funktionier kann ich nicht sagen
 			fmt.Println ("Das Geländefeld wurde als Wasser initialisiert")
-			dummyspielfeld.SetzeGelände(x,y,neuesgelände)
+			dummyspielfeld.SetzeGelände(neuesgelände)
 			fmt.Println ("Ein Geländefeld wurde in das Spielfeld an der Stelle x:",x," y:",y,"eingefügt")
 		}
 	
 	}
 	var neueeinheit einheiten.Einheit
-	neueeinheit = einheiten.New(2,2,"tank",1)
-	dummyspielfeld.SetzeEinheit (2,2, neueeinheit) 
+	neueeinheit = einheiten.New(2,2,"Tank",1)
+	dummyspielfeld.SetzeEinheit (neueeinheit) 
 	//warum wird die einheit nicht mitgezeichnet?
 	
 	fmt.Println ("Das Spielfeld wurde komplett mit Wasser initialisiert")
@@ -42,7 +42,7 @@ func main () {
 	fmt.Println ("Das Gelände an der Koordinate x:0 y:0 ist vom Typ (erwartet Wasser):",x0y0.GibTyp())
 	// Setze Gelände wird getestet
 	x0y0.SetzeTyp("Wüste")
-	dummyspielfeld.SetzeGelände(0,0,x0y0)
+	dummyspielfeld.SetzeGelände(x0y0)
 	fmt.Println ("Das Wüstenfeld wird an der Koordinate x:0 y:0 eingefügt.")
 	var x0y0test gelaende.Gelände = gelaende.New(0,0,"Wald")
 	x0y0test = dummyspielfeld.GibGelände(0,0)

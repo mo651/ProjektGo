@@ -23,12 +23,12 @@ func New (x,y,groesse uint16, dateiname string) *data {
 	(*neu).y= 12 // y --> später wenn variabel
 	(*neu).groesse = 50 // groesse --> später wenn variabel
 	(*neu).dateiname = dateiname
-	for i:=uint16(0);i<y;i++ {
-		var neuegelaendezeile []gelaende.Gelände = make([]gelaende.Gelände,x)
+	for i:=uint16(0);i<(*neu).y;i++ {
+		var neuegelaendezeile []gelaende.Gelände = make([]gelaende.Gelände,(*neu).x)
 		(*neu).gelaendematrix[i]=neuegelaendezeile
 	}
-	for i:=uint16(0);i<y;i++ {
-		var neueeinheitenzeile []einheiten.Einheit = make([]einheiten.Einheit,x)
+	for i:=uint16(0);i<(*neu).y;i++ {
+		var neueeinheitenzeile []einheiten.Einheit = make([]einheiten.Einheit,(*neu).x)
 		(*neu).einheitenmatrix[i]=neueeinheitenzeile
 	}
 	//(*neu).itemmatrix=make ([][]items.Item,y)	
@@ -50,7 +50,8 @@ func (s *data) GibGelände (x,y uint16) gelaende.Gelände {
 	// Eff.: Das übergebene Gelände befindet sich nun an den übergebenen Koordinaten. Das vorherig dort
 	//		 befindliche Gelände ist entfernt.
 
-func (s *data) SetzeGelände (x,y uint16, gelände gelaende.Gelände) {
+func (s *data) SetzeGelände (gelände gelaende.Gelände) {
+  x,y:=gelände.GibKoordinaten()
 	(*s).gelaendematrix[y][x]=gelände
 }
 	
@@ -66,14 +67,12 @@ func (s *data) GibEinheit (x,y uint16) einheiten.Einheit {
 	// Vor.: Das Geländefeld mit den übergebenen Koordinaten darf nicht besetzt sein.
 	// Eff.: Auf dem Geländefeld mit den übergebenen Koordinaten befindet sich nun die übergebene
 	//		 Einheit. 
-func (s *data) SetzeEinheit (x,y uint16, einh einheiten.Einheit) {
+func (s *data) SetzeEinheit (einh einheiten.Einheit) {
+  x,y:=einh.GibKoordinaten ()
 	if (*s).einheitenmatrix[y][x] == nil {	
 		(*s).einheitenmatrix[y][x] = einh
 		// Belegung des Geländefeldes muss auf 'true' geändert werden
-		var gel gelaende.Gelände = gelaende.New (0,0,"Wasser")
-		gel= (*s).gelaendematrix[y][x]
-		gel.SetzeBelegung(true)
-		(*s).gelaendematrix[y][x]=gel
+		(*s).gelaendematrix[y][x].SetzeBelegung(true)
 	}
 }
 	
@@ -83,10 +82,7 @@ func (s *data) EntferneEinheit (x,y uint16) {
 	if (*s).einheitenmatrix[y][x] != nil {
 		(*s).einheitenmatrix[y][x] = nil
 		// Belegung des Geländefeldes muss auf 'false' geändert werden
-		var gel gelaende.Gelände = gelaende.New (0,0,"Wasser")
-		gel= (*s).gelaendematrix[y][x]
-		gel.SetzeBelegung(false)
-		(*s).gelaendematrix[y][x]=gel	
+    (*s).gelaendematrix[y][x].SetzeBelegung(false)
 	}
 }
 	
@@ -257,7 +253,7 @@ func (s *data) Dekodieren (b []byte) {
 			print ("Alle Bytes gedruckt\n")
 			dekodgel.Dekodieren(hilfsbytefeld)
 			println("...dekodiert und ...")
-			s.SetzeGelände(x,y,dekodgel)
+			s.SetzeGelände(dekodgel)
 			println("eingefügt")
 			aktindex=aktindex+gelaendegroesse
 		}
@@ -303,7 +299,7 @@ func (s *data) Dekodieren (b []byte) {
 				print ("Alle Bytes gedruckt\n")
 				dekodein.Dekodieren(hilfsbytefeld)
 				println("...dekodiert und ...")
-				s.SetzeEinheit(x,y,dekodein)
+				s.SetzeEinheit(dekodein)
 				println("eingefügt")
 				aktindex=aktindex+einheitgroesse
 			} else {
@@ -316,7 +312,10 @@ func (s *data) Dekodieren (b []byte) {
 }
 
 func (s *data) GibReichweite(einheit einheiten.Einheit)(erg[][]bool) {
-	erg=make ([][]bool,(*s).x,(*s).y) //standartmäßig Matrix mit false
+	erg=make ([][]bool,(*s).y)
+	for i:=uint16(0);i<(*s).y;i++{
+		erg[i]= make([]bool,(*s).x) //standartmäßig Matrix mit false
+		}
 	// Achtung es ist noch nicht darauf geachtet, dass Eiheiten auf den zu betretenden Felder stehen
 	x,y:=einheit.GibKoordinaten()
 	moeglicheschritte:=einheit.GibBewegungsReichweite()

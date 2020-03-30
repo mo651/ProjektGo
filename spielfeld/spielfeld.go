@@ -26,7 +26,7 @@ type Spielfeld interface {
 	// Vor.: ---
 	// Eff.: Das übergebene Gelände befindet sich nun an den übergebenen Koordinaten. Das vorherig dort
 	//		 befindliche Gelände ist entfernt.
-	SetzeGelände (x,y uint16, gelände gelaende.Gelände) 
+	SetzeGelände (gelände gelaende.Gelände) 
 	
 	// Vor.: Das Geländefeld muss mit einer Einheit besetzt sein.
 	// Erg.: Ein Verweis auf die auf dem übergebenen Geländefeld befindlichen Instanz ist geliefert.
@@ -35,7 +35,7 @@ type Spielfeld interface {
 	// Vor.: Das Geländefeld mit den übergebenen Koordinaten darf nicht besetzt sein.
 	// Eff.: Auf dem Geländefeld mit den übergebenen Koordinaten befindet sich nun die übergebene
 	//		 Einheit. 
-	SetzeEinheit (x,y uint16, einheit einheiten.Einheit) 
+	SetzeEinheit ( einheit einheiten.Einheit) 
 	
 	// Vor.: Das Geländefeld mit den übergebenen Koordinaten muss mit einer Einheit besetzt sein.
 	// Eff.: Die auf dem Geländefeld mit den übergebenen Koordinaten befindliche Einheit ist entfernt.
