@@ -189,20 +189,20 @@ func (s *data) Kodieren () (b []byte){
 	// Eff.: Die aufrufende Instanz hat nun genau diejenige Eigenschaft, sodass 'Kodieren ()' exakt
 	//		 b ergeben würde. Alle vorherigen Eigenschaften des Spielfeldes hat sie nicht mehr.
 func (s *data) Dekodieren (b []byte) {
-	println ("Die Länge des zu dekodierenden Bytefeldes ist: ",len(b))
+	//println ("Die Länge des zu dekodierenden Bytefeldes ist: ",len(b))
 	//Hilfsvariable zum Durchlaufen von b
 	var aktindex int
 	(*s).x=uint16(b[0])*256+uint16(b[1])
-	println ("Die X-Koordinate wurde dekodiert...")		
-	println ("...und lautet: ",(*s).x)
+	//println ("Die X-Koordinate wurde dekodiert...")		
+	//println ("...und lautet: ",(*s).x)
 	aktindex=aktindex+2
 	(*s).y=uint16(b[2])*256+uint16(b[3])
-	println ("Die X-Koordinate wurde dekodiert...")		
-	println ("...und lautet: ",(*s).y)
+	//println ("Die X-Koordinate wurde dekodiert...")		
+	//println ("...und lautet: ",(*s).y)
 	aktindex=aktindex+2
 	(*s).groesse=uint16(b[4])*256+uint16(b[5])
-	println ("Die Feldgröße wurde dekodiert")			
-	println ("...und lautet: ",(*s).groesse)
+	//println ("Die Feldgröße wurde dekodiert")			
+	//println ("...und lautet: ",(*s).groesse)
 	aktindex=aktindex+2
 	// Dekodieren der Anzahl an benötigter Bytes für Dateinamenstrings
 	var stringlaenge uint8 = b[aktindex]
@@ -215,30 +215,30 @@ func (s *data) Dekodieren (b []byte) {
 		(*s).dateiname=(*s).dateiname+string(b[i])
 		}
 	}
-	println ("Der Dateiname wurde dekodiert...")			
-	println ("...und lautet: ",(*s).dateiname)
-	println ("Der Dateiname hat diese Größe: ",stringlaenge," und muss diese haben: ",len("Dummyfeld"))
+	//println ("Der Dateiname wurde dekodiert...")			
+	//println ("...und lautet: ",(*s).dateiname)
+	//println ("Der Dateiname hat diese Größe: ",stringlaenge," und muss diese haben: ",len("Dummyfeld"))
 	aktindex=aktindex+int(stringlaenge)
 	// Dekodieren der Geländematrix
 	// Durchlaufen der Reihen
 	for y:=uint16(0);y<(*s).y;y++ {
-		println("Starte mit Reihe: ",y)
+		//println("Starte mit Reihe: ",y)
 		//Durchlaufen der einzelnen Felder
 		for x:=uint16(0);x<(*s).x;x++ {
 			//Ermitteln des Startindex des nächsten Geländefeldes
-			println("Aktueller Index: ",aktindex)
+			//println("Aktueller Index: ",aktindex)
 			var gelaendegroesse int
 			gelaendegroesse= int(b[aktindex])*256+int(b[aktindex+1])
-			println("Größe des nächsten Feldes",gelaendegroesse)
+			//println("Größe des nächsten Feldes",gelaendegroesse)
 			aktindex=aktindex+2
-			println("Aktueller Index: ",aktindex)
-			print("Einfügen des Feldinhalts ab Index: ",aktindex)
-			println(" an der Stelle x: ",x," y: ",y)
+			//println("Aktueller Index: ",aktindex)
+			//print("Einfügen des Feldinhalts ab Index: ",aktindex)
+			//println(" an der Stelle x: ",x," y: ",y)
 			// Dekodieren des nächsten Geländes
 			var dekodgel gelaende.Gelände 
 			dekodgel=gelaende.New(x,y,"Wasser") 
-			println("Neues Gelände zum Einfügen erstellt...")				
-			println("Dekodieren des Bytefeldes von Index: ",aktindex," bis Index: ",aktindex+gelaendegroesse)
+			//println("Neues Gelände zum Einfügen erstellt...")				
+			//println("Dekodieren des Bytefeldes von Index: ",aktindex," bis Index: ",aktindex+gelaendegroesse)
 			var hilfsbytefeld []byte = make ([]byte,0)
 			for i:=aktindex;i<aktindex+gelaendegroesse+1;i++ {
 				if x==19&&y==11&&i==aktindex+gelaendegroesse {		
@@ -246,23 +246,23 @@ func (s *data) Dekodieren (b []byte) {
 					hilfsbytefeld = append (hilfsbytefeld,b[i])
 				}
 			}
-			println ("Hilfsbytefeld erstellt")
-			for _,w:=range hilfsbytefeld {
-				print (w," ")
-			}
-			print ("Alle Bytes gedruckt\n")
+			//println ("Hilfsbytefeld erstellt")
+			//for _,w:=range hilfsbytefeld {
+				//print (w," ")
+			//}
+			//print ("Alle Bytes gedruckt\n")
 			dekodgel.Dekodieren(hilfsbytefeld)
-			println("...dekodiert und ...")
+			//println("...dekodiert und ...")
 			s.SetzeGelände(dekodgel)
-			println("eingefügt")
+			//println("eingefügt")
 			aktindex=aktindex+gelaendegroesse
 		}
-		println (y,". Reihe erfolgreich dekodiert")
+		//println (y,". Reihe erfolgreich dekodiert")
 	}
 	// Dekodieren der Einheitenmatrix
 	// Durchlaufen der Reihen
 	for y:=uint16(0);y<(*s).y;y++ {
-		println("Starte mit Reihe: ",y)
+		//println("Starte mit Reihe: ",y)
 		//Durchlaufen der einzelnen Felder
 		for x:=uint16(0);x<(*s).x;x++ {
 			// Ermitteln ob eine Einheit eingetragen werden muss
@@ -272,19 +272,19 @@ func (s *data) Dekodieren (b []byte) {
 			if besetzt == 1 {
 				// Eine Einheit muss eingetragen werden
 				//Ermitteln des Startindex der nächsten Einheit
-				println("Aktueller Index: ",aktindex)
+				//println("Aktueller Index: ",aktindex)
 				var einheitgroesse int
 				einheitgroesse= int(b[aktindex])*256+int(b[aktindex+1])
-				println("Größe der nächsten Einheit",einheitgroesse)
+				//println("Größe der nächsten Einheit",einheitgroesse)
 				aktindex=aktindex+2
-				println("Aktueller Index: ",aktindex)
-				print("Einfügen der Einheit ab Index: ",aktindex)
-				println(" an der Stelle x: ",x," y: ",y)
+				//println("Aktueller Index: ",aktindex)
+				//print("Einfügen der Einheit ab Index: ",aktindex)
+				//println(" an der Stelle x: ",x," y: ",y)
 				// Dekodieren der nächsten Einheit
 				var dekodein einheiten.Einheit 
 				dekodein=einheiten.New(x,y,"Artillerie",0) 
-				println("Neue Einheit zum Einfügen erstellt...")
-				println("Dekodieren des Bytefeldes von Index: ",aktindex," bis Index: ",aktindex+einheitgroesse)
+				//println("Neue Einheit zum Einfügen erstellt...")
+				//println("Dekodieren des Bytefeldes von Index: ",aktindex," bis Index: ",aktindex+einheitgroesse)
 				var hilfsbytefeld []byte = make ([]byte,0)
 				for i:=aktindex;i<aktindex+einheitgroesse+1;i++ {
 					if x==19&&y==11&&i==aktindex+einheitgroesse {
@@ -292,22 +292,22 @@ func (s *data) Dekodieren (b []byte) {
 						hilfsbytefeld = append (hilfsbytefeld,b[i])
 					}
 				}
-				println ("Hilfsbytefeld erstellt")
-				for _,w:=range hilfsbytefeld {
-					print (w," ")
-				}
-				print ("Alle Bytes gedruckt\n")
+				//println ("Hilfsbytefeld erstellt")
+				//for _,w:=range hilfsbytefeld {
+					//print (w," ")
+				//}
+				//print ("Alle Bytes gedruckt\n")
 				dekodein.Dekodieren(hilfsbytefeld)
-				println("...dekodiert und ...")
+				//println("...dekodiert und ...")
 				s.SetzeEinheit(dekodein)
-				println("eingefügt")
+				//println("eingefügt")
 				aktindex=aktindex+einheitgroesse
 			} else {
 				// Es musste keine Einheit eingetragen werden
 				(*s).einheitenmatrix[y][x]=nil
 			} 	
 		} 
-		println (y,". Reihe erfolgreich dekodiert")
+		//println (y,". Reihe erfolgreich dekodiert")
 	}
 }
 
@@ -318,29 +318,35 @@ func (s *data) GibReichweite(einheit einheiten.Einheit)(erg[][]bool) {
 		}
 	// Achtung es ist noch nicht darauf geachtet, dass Eiheiten auf den zu betretenden Felder stehen
 	x,y:=einheit.GibKoordinaten()
+  println("Koordinaten:",x,"/",y)
 	moeglicheschritte:=einheit.GibBewegungsReichweite()
+  println("Bewegungsreichweite: ",moeglicheschritte)
 	//gelände:=(*s).gelaendematrix[y][x]
 	//bonusBewegung:=gelände.GibBonusBewegung()
 	var reichweite func(x,y,schritte uint16)
 	reichweite = func (x,y,schritte uint16){
-		if x>(*s).x||y>(*s).y&&schritte<0 {return}		//Abbruch, da am Rand, bzw. keine Schritte mehr übrig
+    println("Anzahl Schritte:", schritte)
+		if x>(*s).x||y>(*s).y&&schritte<0 {println ("Kann nicht weiter laufen");return}		//Abbruch, da am Rand, bzw. keine Schritte mehr übrig
 		gelände:=(*s).gelaendematrix[y][x]
-		malusBewegung:=gelände.GibMalusBewegung() 			
+		malusBewegung:=gelände.GibMalusBewegung() 
+    println("Geländemalus: ",malusBewegung)			
 		if erg[y][x] == false{
+      println ("Feldinhalt wird geändert")
 			erg[y][x]=true
-			if (int16(schritte)-malusBewegung)<0{return}	//Abbruch, da Abzug zu groß...
+      println (erg[y][x])
+			if (int16(schritte)-malusBewegung)<0{println ("Kann nicht weiter laufen");return}	//Abbruch, da Abzug zu groß...
 			// Für jeden weiteren Aufruf muss überprüft werden, ob sich auf diesem Feld eine
 			// Einheit befindet
-			if (*s).einheitenmatrix[y][x+1] !=nil {
+			if (*s).einheitenmatrix[y][x+1] ==nil {
 				reichweite(x+1,y,schritte-uint16(malusBewegung))	// Darf ja jetzt nicht nur einen Schritt weniger weit gehen...
 			}
-			if (*s).einheitenmatrix[y][x-1] !=nil {
+			if (*s).einheitenmatrix[y][x-1] ==nil {
 				reichweite(x-1,y,schritte-uint16(malusBewegung))	// ...sondern so viele Schritte weniger, wie ihm durch den Malus 
 			}
-			if (*s).einheitenmatrix[y+1][x] !=nil {
+			if (*s).einheitenmatrix[y+1][x] ==nil {
 				reichweite(x,y+1,schritte-uint16(malusBewegung))	// ...abgezogen werden
 			}
-			if (*s).einheitenmatrix[y-1][x] !=nil {
+			if (*s).einheitenmatrix[y-1][x] ==nil {
 				reichweite(x,y-1,schritte-uint16(malusBewegung))
 			}
 		}

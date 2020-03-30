@@ -15,18 +15,19 @@ func main () {
 	for y:=uint16(0);y<12;y++ {
 		for x:=uint16(0);x<20;x++ {
 			var neuesgelände gelaende.Gelände
-			fmt.Println ("Ein Geländefeld wurde deklariert")
-			neuesgelände = gelaende.New (x,y,"Wasser") //XXXX man beachte, dass Wasser ist "animiert", ob das im fertigen Spiel auch funktionier kann ich nicht sagen
-			fmt.Println ("Das Geländefeld wurde als Wasser initialisiert")
+			//fmt.Println ("Ein Geländefeld wurde deklariert")
+			neuesgelände = gelaende.New (x,y,"Wald") //XXXX man beachte, dass Wasser ist "animiert", ob das im fertigen Spiel auch funktionier kann ich nicht sagen
+			//fmt.Println ("Das Geländefeld wurde als Wasser initialisiert")
 			dummyspielfeld.SetzeGelände(neuesgelände)
-			fmt.Println ("Ein Geländefeld wurde in das Spielfeld an der Stelle x:",x," y:",y,"eingefügt")
+			//fmt.Println ("Ein Geländefeld wurde in das Spielfeld an der Stelle x:",x," y:",y,"eingefügt")
 		}
 	
 	}
 	var neueeinheit einheiten.Einheit
 	neueeinheit = einheiten.New(2,2,"Tank",1)
-	dummyspielfeld.SetzeEinheit (neueeinheit) 
-	//warum wird die einheit nicht mitgezeichnet?
+	dummyspielfeld.SetzeEinheit (neueeinheit)
+  fmt.Println(dummyspielfeld.GibReichweite(neueeinheit)) 
+	
 	
 	fmt.Println ("Das Spielfeld wurde komplett mit Wasser initialisiert")
 	fmt.Println ("Das Spielfeld wird gezeichnet")
@@ -41,7 +42,7 @@ func main () {
 	// Der Typ des ursprünglichen Waldfeldes muss nun Wasser sein.
 	fmt.Println ("Das Gelände an der Koordinate x:0 y:0 ist vom Typ (erwartet Wasser):",x0y0.GibTyp())
 	// Setze Gelände wird getestet
-	x0y0.SetzeTyp("Wüste")
+	x0y0.SetzeTyp("Wueste")
 	dummyspielfeld.SetzeGelände(x0y0)
 	fmt.Println ("Das Wüstenfeld wird an der Koordinate x:0 y:0 eingefügt.")
 	var x0y0test gelaende.Gelände = gelaende.New(0,0,"Wald")
@@ -80,7 +81,7 @@ func main () {
 	fmt.Println ("Das Spielfeld wird kodiert")
 	var bytespielfeld []byte = make([]byte,0)
 	bytespielfeld= dummyspielfeld.Kodieren()
-	fmt.Println (bytespielfeld)
+	//fmt.Println (bytespielfeld)
 	// Test der Dekodieren Methode:
 	var spielfeldkopie spielfeld.Spielfeld 
 	spielfeldkopie = spielfeld.New (20,12,50,"Spielfeldkopie")
