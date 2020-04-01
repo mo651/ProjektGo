@@ -24,7 +24,7 @@ type Einheit interface {
 	// Vor.: ---
 	// Erg.: Der Angriffswert der Einheit ist geliefert.
 	GibAngriffswert () uint16
-	
+
 	// Vor.: ---
 	// Eff.: Der Angriffswert der Einheit beträgt nun a. 
 	SetzeAngriffswert (a uint16)

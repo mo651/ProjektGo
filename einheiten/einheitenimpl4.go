@@ -60,8 +60,6 @@ func New (x,y uint16, t string, spieler uint8) *data {
 	return neu
 }
 
-
-
 	// Erg.: Der Angriffswert der Einheit ist geliefert.
 func (e *data) GibAngriffswert () uint16 {
 	return (*e).angriff

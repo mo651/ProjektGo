@@ -1,0 +1,27 @@
+11.3.:
+Moritz
+Einheiten wurde um eine gfx. Zeichnugn erweitert
+Testdatein angepasst und in den Ordner Testdateien eingefügt.
+
+18.3.:
+Moritz 
+Spieleditor:
+- Einheiten können auf dem Spielfeld plaziert werden
+- Überprüfung des Typs in die Auswahlroutine verlagert
+- Wird laden gewählt Koordinaten richtig angepasst
+- Dauerschleife zeichnen des Spielfelds zusammegeführt und mit gfdx.Cls() erst einmal alles "gelöscht"
+- speichern, laden und Spielfedaufbau als eigene Funktion ausgelagert
+
+Einheitenimpl:
+- Es gibt jetzt eine weitere Farbvariable für den Rand beim auswählen
+- Die Einheiten bekommen einen Rand, wenn sie ausgewählt werden.
+
+01.04.
+Friederike
+SpielEditor6:
+- nur wenig, war mir aber nicht ganz sicher, ob ich nicht was überschreibe...da müssen wir mal quatschen
+- Zeile 31 eingefügt und 32 angepasst
+spielfeldimpl9:
+- GibReichweite returniert nun zwei Felder mit boolschen Werten --> Bewegung und Angriff
+spielfeld:
+- Return von GibReichweite angepasst

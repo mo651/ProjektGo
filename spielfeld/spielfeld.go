@@ -19,6 +19,10 @@ type Spielfeld interface {
 	
 	//XXXXX GETTER UND SETTER FÜR SPIELFELDGRÖßE NOTWENDIG?????XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	
+  	GibBreite () (x uint16)
+
+
+    	GibHoehe () (x uint16)
 	// Vor.: ---
 	// Erg.: Ein Verweis auf das an dem übergebenen Koordinaten befindliche Gelände ist geliefert.	
 	GibGelände (x,y uint16) gelaende.Gelände
@@ -47,8 +51,9 @@ type Spielfeld interface {
 		
 	EntferneItem (x,y uint16) */
 	
-	//Reichweite in zu erreichenden Feldern
-	GibReichweite(einheit einheiten.Einheit)[][]bool
+  //Muss in den Spielablauf !!! XXXX
+	//Reichweite in zu erreichenden Feldern (Bewegung und Angriff)
+	GibReichweite(einheit einheiten.Einheit)([][]bool,[][]bool)
 	
 	Zeichnen ()
 	
