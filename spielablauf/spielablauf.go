@@ -19,13 +19,21 @@ GibModus() uint8
 // Eff.:
 SetzeModus (m uint8) 
 
-
-
+/*// Vor.:
+// Eff.: 
+ZeichneBewegungsReichweite () 
+--> Als Methode oder Hilfsfunktion??
+// Vor.:
+// Eff.: 
+ZeichneAngriffsReichweite () 
+--> Als Methode oder Hilfsfunktion??*/
 // Vor.: 
 // Eff.: 
 Angreifen (x,y uint16) 
 
 Bewegen (x,y uint16)
+
+Zeichnen()
 }
 
 

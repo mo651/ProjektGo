@@ -56,6 +56,10 @@ type Spielfeld interface {
 	GibReichweite(einheit einheiten.Einheit)([][]bool,[][]bool)
 	
 	Zeichnen ()
+
+  ZeichnenEinheiten ()
+
+  ZeichnenGelaende ()
 	
 	// Vor.: ---
 	// Erg.: Eine Folge von Bytes ist geliefert, die die aufrufende Instanz serialisiert darstellt.

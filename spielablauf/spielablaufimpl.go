@@ -1,6 +1,6 @@
 package spielablauf
 
-import "../spielfeld"
+import ("../spielfeld";"gfx")
 
 type data struct {
   aktspieler uint8    // 0=Spieler 1 ; 1=Spieler2
@@ -13,6 +13,8 @@ type data struct {
                       // da dies auch über anzeinh geregelt werden kann???
   landschaft string   // oder eher Level?? mit Switch-Case welche Datei dann eingespielt wird?? 
   spielfeld spielfeld.Spielfeld
+  gewaehlt *[2]uint16 // 
+ // gewaehltY  
 }
 
 func New () *data {
@@ -37,7 +39,23 @@ func (sa *data) SetzeModus (m uint8) {
   (*sa).modus=m
 }
 
-func (sa *data) GibReichweite(einheit einheiten.Einheit)(erg,erg2 [][]bool) {
+func (sa *data) Zeichnen () {
+  (*sa).spielfeld.Zeichnen ()
+  if (*sa).modus == 0 && (*sa).gewaehlt!=nil {
+    bew,_:=gibReichweite (spielfeld.GibEinheit((*sa).gewaehlt[0],(*sa).gewaehlt[1]))
+    for y:=0;y<int((*sa).spielfeld.GibHoehe());y++{
+        for x:=0;x<int((*sa).spielfeld.GibBreite());x++{
+        if bew[y][x] {
+          gfx.
+        }  
+      }
+    }
+  }
+  
+}
+
+// Könnte in zwei getrennte Methode gesplittet werden aus Performance Gründen
+func (sa *data) gibReichweite(einheit einheiten.Einheit)(erg,erg2 [][]bool) {
   y:=(*sa).spielfeld.GibHoehe()
   x:=(*sa).spielfeld.GibBreite()
 	  erg=make ([][]bool,y)

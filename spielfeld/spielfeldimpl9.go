@@ -120,6 +120,36 @@ func (s *data) Zeichnen () {
 			}
 		}
 	}
+
+  	
+func (s *data) ZeichnenGelaende () {
+	if !gfx.FensterOffen() {
+		gfx.Fenster((*s).x*(*s).groesse+200,(*s).y*(*s).groesse+100) // --> variabel, falls entfernen breite:1200 und Höhe 700
+	}
+	// Zeichnen der Geländeschicht
+	for _,gelreihe := range (*s).gelaendematrix {
+		for _,gel := range gelreihe {
+			gel.Zeichnen ()
+		}
+	}
+	}
+
+  	
+func (s *data) ZeichnenEinheiten () {
+	if !gfx.FensterOffen() {
+		gfx.Fenster((*s).x*(*s).groesse+200,(*s).y*(*s).groesse+100) // --> variabel, falls entfernen breite:1200 und Höhe 700
+	}
+	// Einzeichnen der Einheiten
+	for _,einhreihe := range (*s).einheitenmatrix {
+		for _,einh := range einhreihe {
+			if einh != nil {
+				einh.Zeichnen ()
+			}
+		}
+	}
+  }
+
+
 	/* Einzeichnen der Items
 	 * for _,itmreihe := range itemmatrix {
 		for _,itm := range itmreihe {
